@@ -2,7 +2,6 @@ import GameManager from './GameManager.js';
 
 export default canvasComponent => {
   const gameManager = new GameManager(canvasComponent);
-  console.log(gameManager);
 
   const bindEventListeners = () => {
     window.onresize = resizeCanvas;
@@ -15,13 +14,24 @@ export default canvasComponent => {
     canvasComponent.width = canvasComponent.offsetWidth;
     canvasComponent.height = canvasComponent.offsetHeight;
     gameManager.onWindowResize();
-    gameManager.testMessage();
   };
+
+  let inputKey;
+
+  window.addEventListener('keydown', event => {
+    inputKey = event.keyCode;
+  });
+
+  window.addEventListener('keyup', event => {
+    inputKey = undefined;
+  });
+
   const render = time => {
     requestAnimationFrame(render);
-    gameManager.update();
+    gameManager.update(inputKey);
     gameManager.drawScene();
   };
+
   bindEventListeners();
   render();
 };

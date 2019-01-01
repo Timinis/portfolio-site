@@ -5,10 +5,13 @@ export default canvas => {
 
   let scene = new THREE.Scene();
 
+  let fieldWidth = window.innerWidth;
+  let fieldHeight = window.innerHeight;
+
   //* Camera Section *//
 
   let cameraAngle = 75;
-  let cameraAspect = window.innerWidth / window.innerHeight;
+  let cameraAspect = fieldWidth / fieldHeight;
   let cameraNear = 0.1;
   let cameraFar = 1000;
 
@@ -19,19 +22,22 @@ export default canvas => {
     cameraFar
   );
 
-  camera.position.z = 500;
+  camera.position.z = 700;
 
   //* Renderer Section *//
   let renderer = new THREE.WebGLRenderer({ canvas: canvas });
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(fieldWidth, fieldHeight);
   const onWindowResize = () => {
-    let width = window.innerWidth;
-    let height = window.innerHeight;
+    let width = fieldWidth;
+    let height = fieldHeight;
     renderer.setSize(width, height);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
   };
+
+  //* Parts in Game *//
+
   //Ball in Game
 
   let ballRadius = 10;
@@ -62,7 +68,7 @@ export default canvas => {
 
   scene.add(pointLight);
 
-  //Paddle in game
+  //Paddles in game
   let paddleWidth = 10;
   let paddleHeight = 100;
   let paddleDepth = 10;
@@ -83,37 +89,59 @@ export default canvas => {
   let paddle1 = new THREE.Mesh(paddleGeometry, paddle1Material);
   let paddle2 = new THREE.Mesh(paddleGeometry, paddle2Material);
 
-  paddle1.position.x = -window.innerWidth / 2 + 50 + paddleWidth;
-  paddle2.position.x = window.innerWidth / 2 - 50 - paddleWidth;
+  paddle1.position.x = -fieldWidth / 2 + 50 + paddleWidth;
+  paddle2.position.x = fieldWidth / 2 - 50 - paddleWidth;
   paddle1.position.z = paddleDepth;
   paddle2.position.z = paddleDepth;
 
   scene.add(paddle1);
   scene.add(paddle2);
 
-  //Plane in game
-  let planeQuality = 10;
-  let planeMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
-  let planeGeometry = new THREE.PlaneGeometry(
-    window.innerWidth * 0.95,
-    window.innerHeight,
-    planeQuality,
-    planeQuality
+  //Board in game
+  let boardQuality = 10;
+  let boardMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
+  let boardGeometry = new THREE.PlaneGeometry(
+    fieldWidth * 0.95,
+    fieldHeight,
+    boardQuality,
+    boardQuality
   );
-  let plane = new THREE.Mesh(planeGeometry, planeMaterial);
+  let board = new THREE.Mesh(boardGeometry, boardMaterial);
 
-  scene.add(plane);
+  scene.add(board);
 
-  const update = () => {
-    ball.rotation.y += 0.01;
+  //* Game Physics *//
+
+  let ballXDirection = 1;
+  let ballYDirection = 1;
+  let ballSpeed = 4;
+
+  const ballPhysics = () => {
+    ball.position.x += ballXDirection * ballSpeed;
+    ball.position.y += ballYDirection * ballSpeed;
+
+    if (ball.position.y >= fieldHeight / 2 - ballRadius) {
+      ballYDirection = -ballYDirection;
+    }
+
+    if (ball.position.y <= -fieldHeight / 2 + ballRadius) {
+      ballYDirection = -ballYDirection;
+    }
+  };
+
+  const update = inputKey => {
+    ballPhysics();
+    if (inputKey === 38) {
+      paddle1.position.y += 5;
+    }
+    if (inputKey === 40) {
+      paddle1.position.y -= 5;
+    }
   };
 
   const drawScene = () => {
     renderer.render(scene, camera);
   };
-  const testMessage = () => {
-    console.log('test test');
-  };
 
-  return { onWindowResize, update, drawScene, testMessage };
+  return { onWindowResize, update, drawScene };
 };
