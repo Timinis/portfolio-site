@@ -23,8 +23,8 @@ export default canvas => {
   );
 
   camera.position.z = 70;
-  camera.position.x = -900;
-  camera.lookAt(300, 0, 0);
+  camera.position.x = -600;
+  camera.lookAt(900, 0, 0);
   camera.rotation.x = (90 * Math.PI) / 180;
 
   //* Renderer Section *//
@@ -43,7 +43,7 @@ export default canvas => {
 
   //Ball in Game
 
-  let ballRadius = 10;
+  let ballRadius = 7;
   let ballSegments = 40;
   let ballRings = 40;
 
@@ -61,6 +61,22 @@ export default canvas => {
   ball.position.z = ballRadius;
   scene.add(ball);
 
+  //Board in game
+
+  let boardWidth = fieldWidth * 0.4;
+
+  let boardQuality = 10;
+  let boardMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
+  let boardGeometry = new THREE.PlaneGeometry(
+    boardWidth,
+    fieldHeight * 0.3,
+    boardQuality,
+    boardQuality
+  );
+  let board = new THREE.Mesh(boardGeometry, boardMaterial);
+
+  scene.add(board);
+
   // Light in game
   let pointLight = new THREE.PointLight(0xf8d898);
 
@@ -74,8 +90,8 @@ export default canvas => {
 
   //Paddles in game
   let paddleWidth = 10;
-  let paddleHeight = 100;
-  let paddleDepth = 10;
+  let paddleHeight = 50;
+  let paddleDepth = 15;
   let paddleQuality = 1;
 
   let paddleGeometry = new THREE.CubeGeometry(
@@ -93,56 +109,81 @@ export default canvas => {
   let paddle1 = new THREE.Mesh(paddleGeometry, paddle1Material);
   let paddle2 = new THREE.Mesh(paddleGeometry, paddle2Material);
 
-  paddle1.position.x = -fieldWidth / 2 + 50 + paddleWidth;
-  paddle2.position.x = fieldWidth / 2 - 50 - paddleWidth;
-  paddle1.position.z = paddleDepth;
-  paddle2.position.z = paddleDepth;
+  let paddle1UpperRange = paddle1.position.y + paddleHeight / 2;
+  let paddle1LowerRange = paddle1.position.y - paddleHeight / 2;
+
+  paddle1.position.x = -boardWidth / 2 + paddleWidth;
+  paddle2.position.x = boardWidth / 2 - paddleWidth;
+  paddle1.position.z = paddleDepth - 8;
+  paddle2.position.z = paddleDepth - 8;
 
   scene.add(paddle1);
   scene.add(paddle2);
-
-  //Board in game
-  let boardQuality = 10;
-  let boardMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
-  let boardGeometry = new THREE.PlaneGeometry(
-    fieldWidth * 0.95,
-    fieldHeight * 0.7,
-    boardQuality,
-    boardQuality
-  );
-  let board = new THREE.Mesh(boardGeometry, boardMaterial);
-
-  scene.add(board);
 
   //* Game Physics *//
 
   let ballXDirection = 1;
   let ballYDirection = 1;
-  let ballSpeed = 4;
+  let ballSpeed = 3;
 
   const ballPhysics = () => {
     ball.position.x += ballXDirection * ballSpeed;
     ball.position.y += ballYDirection * ballSpeed;
 
-    if (ball.position.y >= (fieldHeight * 0.7) / 2 - ballRadius) {
+    if (ball.position.y >= (fieldHeight * 0.3) / 2 - ballRadius) {
       ballYDirection = -ballYDirection;
     }
 
-    if (ball.position.y <= (-fieldHeight * 0.7) / 2 + ballRadius) {
+    if (ball.position.y <= (-fieldHeight * 0.3) / 2 + ballRadius) {
       ballYDirection = -ballYDirection;
     }
-    if (ball.position.x >= (fieldWidth * 0.95) / 2) {
+    if (ball.position.x >= boardWidth / 2) {
       ballXDirection = -ballXDirection;
+    }
+
+    if (
+      ball.position.x <= -boardWidth / 2 + paddleWidth + ballRadius &&
+      ball.position.y < paddle1UpperRange &&
+      ball.position.y > paddle1LowerRange
+    ) {
+      ballXDirection = -ballXDirection;
+    }
+    if (ball.position.x < -boardWidth / 2) {
+      ball.position.x = 0;
+      ball.position.y = 0;
+      ballXDirection = 1;
+      ballYDirection = 1;
     }
   };
 
   const update = inputKey => {
     ballPhysics();
-    if (inputKey === 38) {
-      paddle1.position.y += 5;
-    }
-    if (inputKey === 40) {
-      paddle1.position.y -= 5;
+    if (
+      paddle1UpperRange <= (fieldHeight * 0.3) / 2 - ballRadius &&
+      paddle1LowerRange >= (-fieldHeight * 0.3) / 2 + ballRadius
+    ) {
+      if (inputKey === 37) {
+        paddle1.position.y += 4;
+        paddle1UpperRange += 4;
+        paddle1LowerRange += 4;
+      }
+      if (inputKey === 39) {
+        paddle1.position.y -= 4;
+        paddle1UpperRange -= 4;
+        paddle1LowerRange -= 4;
+      }
+    } else if (paddle1UpperRange > (fieldHeight * 0.3) / 2 - ballRadius) {
+      if (inputKey === 39) {
+        paddle1.position.y -= 4;
+        paddle1UpperRange -= 4;
+        paddle1LowerRange -= 4;
+      }
+    } else if (paddle1LowerRange < (-fieldHeight * 0.3) / 2 + ballRadius) {
+      if (inputKey === 37) {
+        paddle1.position.y += 4;
+        paddle1UpperRange += 4;
+        paddle1LowerRange += 4;
+      }
     }
   };
 
