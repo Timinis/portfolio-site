@@ -10,10 +10,10 @@ export default canvas => {
 
   //* Camera Section *//
 
-  let cameraAngle = 75;
+  let cameraAngle = 40;
   let cameraAspect = fieldWidth / fieldHeight;
   let cameraNear = 0.1;
-  let cameraFar = 1000;
+  let cameraFar = 100000;
 
   let camera = new THREE.PerspectiveCamera(
     cameraAngle,
@@ -22,7 +22,10 @@ export default canvas => {
     cameraFar
   );
 
-  camera.position.z = 700;
+  camera.position.z = 70;
+  camera.position.x = -900;
+  camera.lookAt(300, 0, 0);
+  camera.rotation.x = (90 * Math.PI) / 180;
 
   //* Renderer Section *//
   let renderer = new THREE.WebGLRenderer({ canvas: canvas });
@@ -55,6 +58,7 @@ export default canvas => {
 
   let ball = new THREE.Mesh(ballGeometry, ballMaterial);
 
+  ball.position.z = ballRadius;
   scene.add(ball);
 
   // Light in game
@@ -63,7 +67,7 @@ export default canvas => {
   pointLight.position.x = -500;
   pointLight.position.y = 500;
   pointLight.position.z = 1000;
-  pointLight.intensity = 2.9;
+  pointLight.intensity = 3;
   pointLight.distance = 10000;
 
   scene.add(pointLight);
@@ -102,7 +106,7 @@ export default canvas => {
   let boardMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
   let boardGeometry = new THREE.PlaneGeometry(
     fieldWidth * 0.95,
-    fieldHeight,
+    fieldHeight * 0.7,
     boardQuality,
     boardQuality
   );
@@ -120,12 +124,15 @@ export default canvas => {
     ball.position.x += ballXDirection * ballSpeed;
     ball.position.y += ballYDirection * ballSpeed;
 
-    if (ball.position.y >= fieldHeight / 2 - ballRadius) {
+    if (ball.position.y >= (fieldHeight * 0.7) / 2 - ballRadius) {
       ballYDirection = -ballYDirection;
     }
 
-    if (ball.position.y <= -fieldHeight / 2 + ballRadius) {
+    if (ball.position.y <= (-fieldHeight * 0.7) / 2 + ballRadius) {
       ballYDirection = -ballYDirection;
+    }
+    if (ball.position.x >= (fieldWidth * 0.95) / 2) {
+      ballXDirection = -ballXDirection;
     }
   };
 
