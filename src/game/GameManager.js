@@ -52,14 +52,21 @@ export default canvas => {
     ballSegments,
     ballRings
   );
-  let ballMaterial = new THREE.MeshLambertMaterial({
-    color: 0x7ee1e1
+  let ballMaterial = new THREE.MeshStandardMaterial({
+    color: 0x9effff
   });
 
   let ball = new THREE.Mesh(ballGeometry, ballMaterial);
 
   ball.position.z = ballRadius;
-  scene.add(ball);
+
+  let addBallDelay = () => {
+    scene.add(ball);
+    ball.position.x = 0;
+    ball.position.y = 0;
+  };
+
+  setTimeout(addBallDelay, 1500);
 
   //Board in game
 
@@ -120,6 +127,63 @@ export default canvas => {
   scene.add(paddle1);
   scene.add(paddle2);
 
+  //* Score Keeper *//
+
+  let scoreKeeper = document.createElement('canvas');
+
+  let scoreContext = scoreKeeper.getContext('2d');
+
+  let player1Score = 0;
+  let player2Score = 0;
+
+  const scoreUpdater = () => {
+    scoreContext.font = '20pt Arial';
+
+    scoreContext.fillStyle = 'black';
+    scoreContext.fillRect(
+      10,
+      10,
+      scoreKeeper.width - 20,
+      scoreKeeper.height - 20
+    );
+    scoreContext.fillStyle = 'white';
+    scoreContext.textAlign = 'center';
+    scoreContext.textBaseline = 'middle';
+    scoreContext.fillText(
+      `${player1Score}  |  ${player2Score}`,
+      scoreKeeper.width / 2,
+      scoreKeeper.height / 2
+    );
+    scoreContext.fillText(
+      `Player 1   Player 2`,
+      scoreKeeper.width / 2,
+      scoreKeeper.height / 2 - 30
+    );
+  };
+
+  let scoreBoardWidth = 300;
+  let scoreBoardHeight = 300;
+
+  let scoreBoardGeometry = new THREE.PlaneGeometry(
+    scoreBoardWidth,
+    scoreBoardHeight
+  );
+
+  let scoreTexture = new THREE.Texture(scoreKeeper);
+
+  let scoreBoardMaterial = new THREE.MeshBasicMaterial({
+    map: scoreTexture
+  });
+  let scoreBoard = new THREE.Mesh(scoreBoardGeometry, scoreBoardMaterial);
+
+  console.log(scoreContext);
+
+  scene.add(scoreBoard);
+  scoreBoard.position.z = 200;
+  scoreBoard.position.x = boardWidth / 2;
+
+  scoreBoard.rotation.y = -Math.PI / 2;
+  scoreBoard.rotation.x = Math.PI / 2;
   //* Game Physics *//
 
   let ballXDirection = 1;
@@ -148,15 +212,24 @@ export default canvas => {
     ) {
       ballXDirection = -ballXDirection;
     }
-    if (ball.position.x < -boardWidth / 2) {
+
+    if (ball.position.x < -boardWidth / 2 + paddleWidth) {
+      player2Score += 1;
       ball.position.x = 0;
       ball.position.y = 0;
-      ballXDirection = 1;
-      ballYDirection = 1;
+      ballXDirection = 0;
+      ballYDirection = 0;
+      setTimeout(ballDelayStart, 1500);
     }
+  };
+  const ballDelayStart = () => {
+    ballXDirection = 1;
+    ballYDirection = 1;
   };
 
   const update = inputKey => {
+    scoreUpdater();
+    scoreTexture.needsUpdate = true;
     ballPhysics();
     if (
       paddle1UpperRange <= (fieldHeight * 0.3) / 2 - ballRadius &&
