@@ -24,9 +24,9 @@ export default canvas => {
   );
 
   camera.position.z = 70;
-  camera.position.x = -600;
+  camera.position.x = -620;
   camera.lookAt(900, 0, 0);
-  camera.rotation.x = (90 * Math.PI) / 180;
+  camera.rotation.x = Math.PI / 2;
 
   //* Renderer Section *//
   let renderer = new THREE.WebGLRenderer({ canvas: canvas });
