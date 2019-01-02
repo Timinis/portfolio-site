@@ -7,6 +7,7 @@ export default canvas => {
 
   let fieldWidth = window.innerWidth;
   let fieldHeight = window.innerHeight;
+  let gameStarted = false;
 
   //* Camera Section *//
 
@@ -59,14 +60,6 @@ export default canvas => {
   let ball = new THREE.Mesh(ballGeometry, ballMaterial);
 
   ball.position.z = ballRadius;
-
-  let addBallDelay = () => {
-    scene.add(ball);
-    ball.position.x = 0;
-    ball.position.y = 0;
-  };
-
-  setTimeout(addBallDelay, 1500);
 
   //Board in game
 
@@ -135,6 +128,26 @@ export default canvas => {
 
   let player1Score = 0;
   let player2Score = 0;
+  let downCounter;
+  let countDownBool = false;
+  let playerNames = `Player 1   Player 2`;
+
+  const countDown = () => {
+    downCounter = 3;
+    setTimeout(() => {
+      downCounter -= 1;
+    }, 1000);
+    setTimeout(() => {
+      downCounter -= 1;
+    }, 2000);
+    setTimeout(() => {
+      downCounter -= 1;
+    }, 3000);
+    setTimeout(() => {
+      downCounter = playerNames;
+    }, 3100);
+    countDownBool = false;
+  };
 
   const scoreUpdater = () => {
     scoreContext.font = '20pt Arial';
@@ -149,16 +162,25 @@ export default canvas => {
     scoreContext.fillStyle = 'white';
     scoreContext.textAlign = 'center';
     scoreContext.textBaseline = 'middle';
-    scoreContext.fillText(
-      `${player1Score}  |  ${player2Score}`,
-      scoreKeeper.width / 2,
-      scoreKeeper.height / 2
-    );
-    scoreContext.fillText(
-      `Player 1   Player 2`,
-      scoreKeeper.width / 2,
-      scoreKeeper.height / 2 - 30
-    );
+    if (!gameStarted) {
+      scoreContext.fillText(
+        'Press ENTER to Start',
+        scoreKeeper.width / 2,
+        scoreKeeper.height / 2 - 30
+      );
+    }
+    if (gameStarted) {
+      scoreContext.fillText(
+        downCounter,
+        scoreKeeper.width / 2,
+        scoreKeeper.height / 2 - 30
+      );
+      scoreContext.fillText(
+        `${player1Score}  |  ${player2Score}`,
+        scoreKeeper.width / 2,
+        scoreKeeper.height / 2
+      );
+    }
   };
 
   let scoreBoardWidth = 300;
@@ -170,6 +192,7 @@ export default canvas => {
   );
 
   let scoreTexture = new THREE.Texture(scoreKeeper);
+  scoreTexture.minFilter = THREE.LinearFilter;
 
   let scoreBoardMaterial = new THREE.MeshBasicMaterial({
     map: scoreTexture
@@ -184,11 +207,23 @@ export default canvas => {
 
   scoreBoard.rotation.y = -Math.PI / 2;
   scoreBoard.rotation.x = Math.PI / 2;
+
   //* Game Physics *//
 
   let ballXDirection = 1;
   let ballYDirection = 1;
   let ballSpeed = 3;
+  let startGame = () => {
+    if (!gameStarted) {
+      setTimeout(() => {
+        scene.add(ball);
+        ball.position.x = 0;
+        ball.position.y = 0;
+      }, 3000);
+      countDownBool = true;
+    }
+    gameStarted = true;
+  };
 
   const ballPhysics = () => {
     ball.position.x += ballXDirection * ballSpeed;
@@ -219,7 +254,8 @@ export default canvas => {
       ball.position.y = 0;
       ballXDirection = 0;
       ballYDirection = 0;
-      setTimeout(ballDelayStart, 1500);
+      setTimeout(ballDelayStart, 3000);
+      countDownBool = true;
     }
   };
   const ballDelayStart = () => {
@@ -230,7 +266,16 @@ export default canvas => {
   const update = inputKey => {
     scoreUpdater();
     scoreTexture.needsUpdate = true;
-    ballPhysics();
+
+    if (inputKey === 13) {
+      startGame();
+    }
+    if (gameStarted) {
+      ballPhysics();
+      if (countDownBool) {
+        countDown();
+      }
+    }
     if (
       paddle1UpperRange <= (fieldHeight * 0.3) / 2 - ballRadius &&
       paddle1LowerRange >= (-fieldHeight * 0.3) / 2 + ballRadius
