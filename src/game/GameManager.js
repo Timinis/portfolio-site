@@ -64,12 +64,13 @@ export default canvas => {
   //Board in game
 
   let boardWidth = fieldWidth * 0.4;
+  let boardHeight = fieldHeight * 0.3;
 
   let boardQuality = 10;
   let boardMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
   let boardGeometry = new THREE.PlaneGeometry(
     boardWidth,
-    fieldHeight * 0.3,
+    boardHeight,
     boardQuality,
     boardQuality
   );
@@ -87,6 +88,12 @@ export default canvas => {
   pointLight.distance = 10000;
 
   scene.add(pointLight);
+
+  let spotLight = new THREE.SpotLight(0xf8d898);
+  spotLight.position.set(0, 0, 100);
+  spotLight.intensity = 0.5;
+  spotLight.castShadow = true;
+  scene.add(spotLight);
 
   //Paddles in game
   let paddleWidth = 10;
@@ -119,6 +126,68 @@ export default canvas => {
 
   scene.add(paddle1);
   scene.add(paddle2);
+
+  //* Background Items *//
+
+  //Pillar
+
+  let pillarGeometry = new THREE.CylinderGeometry(20, 20, 400, 32);
+  let pillarMaterial = new THREE.MeshLambertMaterial({ color: 0x3499a6 });
+  let pillar1 = new THREE.Mesh(pillarGeometry, pillarMaterial);
+  let pillar2 = new THREE.Mesh(pillarGeometry, pillarMaterial);
+  let pillar3 = new THREE.Mesh(pillarGeometry, pillarMaterial);
+  let pillar4 = new THREE.Mesh(pillarGeometry, pillarMaterial);
+  let pillar5 = new THREE.Mesh(pillarGeometry, pillarMaterial);
+  let pillar6 = new THREE.Mesh(pillarGeometry, pillarMaterial);
+
+  scene.add(pillar1);
+  scene.add(pillar2);
+  scene.add(pillar3);
+  scene.add(pillar4);
+  scene.add(pillar5);
+  scene.add(pillar6);
+
+  pillar1.rotation.x = Math.PI / 2;
+  pillar1.position.y = boardHeight / 2 + 100;
+  pillar2.rotation.x = Math.PI / 2;
+  pillar2.position.y = -boardHeight / 2 - 100;
+  pillar3.rotation.x = Math.PI / 2;
+  pillar3.position.y = boardHeight / 2 + 100;
+  pillar3.position.x = boardWidth / 2 + 100;
+  pillar4.rotation.x = Math.PI / 2;
+  pillar4.position.y = -boardHeight / 2 - 100;
+  pillar4.position.x = boardWidth / 2 + 100;
+
+  pillar5.rotation.x = Math.PI / 2;
+  pillar5.position.y = boardHeight / 2 + 100;
+  pillar5.position.x = -boardWidth / 2 - 100;
+
+  pillar6.rotation.x = Math.PI / 2;
+  pillar6.position.y = -boardHeight / 2 - 100;
+  pillar6.position.x = -boardWidth / 2 - 100;
+
+  //Table
+
+  let tableGeometry = new THREE.CubeGeometry(
+    boardWidth + 30,
+    boardHeight + 30,
+    50
+  );
+
+  let tableMaterial = new THREE.MeshLambertMaterial({ color: 0x2e2e2e });
+
+  let table = new THREE.Mesh(tableGeometry, tableMaterial);
+
+  scene.add(table);
+
+  table.position.z = -26;
+
+  let floorGeometry = new THREE.PlaneGeometry(1500, 1200);
+  let floorMaterial = new THREE.MeshBasicMaterial({ color: 0xfaedc0 });
+
+  let floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  scene.add(floor);
+  floor.position.z = -200;
 
   //* Score Keeper *//
 
@@ -183,7 +252,7 @@ export default canvas => {
     }
   };
 
-  let scoreBoardWidth = 300;
+  let scoreBoardWidth = 200;
   let scoreBoardHeight = 300;
 
   let scoreBoardGeometry = new THREE.PlaneGeometry(
@@ -229,11 +298,11 @@ export default canvas => {
     ball.position.x += ballXDirection * ballSpeed;
     ball.position.y += ballYDirection * ballSpeed;
 
-    if (ball.position.y >= (fieldHeight * 0.3) / 2 - ballRadius) {
+    if (ball.position.y >= boardHeight / 2 - ballRadius) {
       ballYDirection = -ballYDirection;
     }
 
-    if (ball.position.y <= (-fieldHeight * 0.3) / 2 + ballRadius) {
+    if (ball.position.y <= -boardHeight / 2 + ballRadius) {
       ballYDirection = -ballYDirection;
     }
     if (ball.position.x >= boardWidth / 2) {
@@ -277,8 +346,8 @@ export default canvas => {
       }
     }
     if (
-      paddle1UpperRange <= (fieldHeight * 0.3) / 2 - ballRadius &&
-      paddle1LowerRange >= (-fieldHeight * 0.3) / 2 + ballRadius
+      paddle1UpperRange <= boardHeight / 2 - ballRadius &&
+      paddle1LowerRange >= -boardHeight / 2 + ballRadius
     ) {
       if (inputKey === 37) {
         paddle1.position.y += 4;
@@ -290,13 +359,13 @@ export default canvas => {
         paddle1UpperRange -= 4;
         paddle1LowerRange -= 4;
       }
-    } else if (paddle1UpperRange > (fieldHeight * 0.3) / 2 - ballRadius) {
+    } else if (paddle1UpperRange > boardHeight / 2 - ballRadius) {
       if (inputKey === 39) {
         paddle1.position.y -= 4;
         paddle1UpperRange -= 4;
         paddle1LowerRange -= 4;
       }
-    } else if (paddle1LowerRange < (-fieldHeight * 0.3) / 2 + ballRadius) {
+    } else if (paddle1LowerRange < -boardHeight / 2 + ballRadius) {
       if (inputKey === 37) {
         paddle1.position.y += 4;
         paddle1UpperRange += 4;
