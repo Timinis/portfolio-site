@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import NavBar from '../Nav/Nav.js';
+import ThreeBackground from '../ThreeBackground/ThreeBackground.js';
 
 class Home extends Component {
   render() {
     return (
       <div>
         <NavBar />
-        <h1>Tim's WireFrame</h1>
+        <ThreeBackground />
       </div>
     );
   }
