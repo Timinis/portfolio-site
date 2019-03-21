@@ -74,13 +74,7 @@ export default canvas => {
 
   octahedronArray.forEach(element => scene.add(element));
 
-  const update = () => {};
-
-  let cameraUpperLimit = 300;
-
-  let zoomingEffect = 0.25;
-
-  const drawScene = () => {
+  const update = () => {
     renderer.render(scene, camera);
     camera.rotation.y += 0.0005;
     camera.rotation.x += 0.0005;
@@ -93,6 +87,12 @@ export default canvas => {
       element.rotation.y -= 0.01;
     });
   };
+
+  let cameraUpperLimit = 300;
+
+  let zoomingEffect = 0.25;
+
+  const drawScene = () => {};
 
   return { onWindowResize, update, drawScene };
 };

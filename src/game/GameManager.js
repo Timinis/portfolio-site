@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { SignatureKind } from 'typescript';
 
 export default canvas => {
   //* Scene Section *//
@@ -41,6 +42,25 @@ export default canvas => {
   };
 
   //* Parts in Game *//
+
+  //Buttons for mode
+
+  let loader = new THREE.FontLoader();
+  loader.load(`./helvetiker_regular.typeface.json`, response => {
+    console.log(response);
+  });
+
+  // let textGeometry = new THREE.TextGeometry('Hello three.js!', {
+  //   font: font,
+  //   size: 80
+  // });
+
+  // let textMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
+
+  // let singlePlayer = new THREE.Mesh(textGeometry, textMaterial);
+  // singlePlayer.position.z = 100;
+
+  // scene.add(singlePlayer);
 
   //Ball in Game
 
@@ -268,14 +288,14 @@ export default canvas => {
   });
   let scoreBoard = new THREE.Mesh(scoreBoardGeometry, scoreBoardMaterial);
 
-  console.log(scoreContext);
-
   scene.add(scoreBoard);
   scoreBoard.position.z = 200;
   scoreBoard.position.x = boardWidth / 2;
 
   scoreBoard.rotation.y = -Math.PI / 2;
   scoreBoard.rotation.x = Math.PI / 2;
+
+  console.log(scene.children);
 
   //* Game Physics *//
 

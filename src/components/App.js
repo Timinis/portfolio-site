@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Home from './Home/Home.js';
 import GameScreen from './GameScreen/GameScreen.js';
+import Map from './Map/Map.js';
 
 class App extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class App extends Component {
         <div>
           <Route path="/" exact component={Home} />
           <Route path="/game" exact component={GameScreen} />
+          <Route path="/map" exact component={Map} />
         </div>
       </BrowserRouter>
     );
