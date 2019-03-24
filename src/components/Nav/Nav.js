@@ -8,6 +8,7 @@ class NavBar extends Component {
         <Link to="/">Home</Link>
         <Link to="/game">Game</Link>
         <Link to="/map">Map</Link>
+        <Link to="/conway">Conway</Link>
       </nav>
     );
   }
