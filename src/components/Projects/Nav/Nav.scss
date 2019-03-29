@@ -1,0 +1,25 @@
+.project-nav {
+  position: fixed;
+  left: 10vw;
+  top: 3vh;
+  a {
+    border: solid 1px white;
+    font-size: 40px;
+    color: white;
+    margin-right: 40px;
+    background: #5f0f4e;
+    border-radius: 15px;
+    padding: 7px;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    text-decoration: none;
+    opacity: 0.8;
+  }
+  a:hover {
+    opacity: 1;
+    color: #ffffff;
+    border: solid 1px white;
+  }
+  a:visited {
+    color: white;
+  }
+}

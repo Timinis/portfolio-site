@@ -1,10 +1,10 @@
 import * as THREE from 'three';
-import { SignatureKind } from 'typescript';
 
 export default canvas => {
   //* Scene Section *//
 
   let scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xf0f0f0);
 
   let fieldWidth = window.innerWidth;
   let fieldHeight = window.innerHeight;
@@ -241,14 +241,14 @@ export default canvas => {
   const scoreUpdater = () => {
     scoreContext.font = '20pt Arial';
 
-    scoreContext.fillStyle = 'black';
+    scoreContext.fillStyle = 'white';
     scoreContext.fillRect(
       10,
       10,
       scoreKeeper.width - 20,
       scoreKeeper.height - 20
     );
-    scoreContext.fillStyle = 'white';
+    scoreContext.fillStyle = 'black';
     scoreContext.textAlign = 'center';
     scoreContext.textBaseline = 'middle';
     if (!gameStarted) {
@@ -273,7 +273,7 @@ export default canvas => {
   };
 
   let scoreBoardWidth = 200;
-  let scoreBoardHeight = 300;
+  let scoreBoardHeight = 100;
 
   let scoreBoardGeometry = new THREE.PlaneGeometry(
     scoreBoardWidth,

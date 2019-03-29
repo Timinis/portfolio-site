@@ -228,7 +228,7 @@ export default canvasComponent => {
         if (grid === 0) {
           gridcolor = 'white';
         } else {
-          gridcolor = 'yellow';
+          gridcolor = 'cyan';
         }
         canvasContext.fillStyle = gridcolor;
         canvasContext.fillRect(

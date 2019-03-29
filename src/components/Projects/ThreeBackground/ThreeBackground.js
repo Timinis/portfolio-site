@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import backgroundRender from '../../background/backgroundRender';
-
+import backgroundRender from '../../../background/backgroundRender';
+import './ThreeBackground.scss';
 class ThreeBackground extends Component {
   componentDidMount() {
     const canvas = document.getElementById('background');
@@ -9,7 +9,7 @@ class ThreeBackground extends Component {
 
   render() {
     return (
-      <div>
+      <div className="background">
         <canvas id="background" />
       </div>
     );

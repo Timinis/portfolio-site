@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import NavBar from '../Nav/Nav.js';
-import gameRender from '../../game/gameRender.js';
+import gameRender from '../../../game/gameRender.js';
 
 class GameScreen extends Component {
   componentDidMount() {
