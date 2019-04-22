@@ -200,7 +200,7 @@ export default canvasComponent => {
 
   canvasComponent.addEventListener('click', event => {
     let mouseXPos = Math.floor((event.clientX - 11.5) / 11.5);
-    let mouseYPos = Math.floor((event.clientY - 30) / 11.5);
+    let mouseYPos = Math.floor((event.clientY - 86) / 11.5);
 
     if (Model.board[mouseYPos][mouseXPos] === 0) {
       Model.board[mouseYPos][mouseXPos] = 1;

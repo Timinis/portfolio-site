@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom';
 import Home from './Home/Home.js';
 import Main from './Projects/Main/Main.js';
 import GameScreen from './Projects/GameScreen/GameScreen.js';
@@ -17,7 +17,7 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <div>
           <Route path="/" exact component={Home} />
           <Route path="/projects" exact component={Main} />
@@ -25,7 +25,7 @@ class App extends Component {
           <Route path="/projects/map" exact component={Map} />
           <Route path="/projects/conway" exact component={Conway} />
         </div>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }
