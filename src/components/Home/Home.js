@@ -123,37 +123,43 @@ class Home extends Component {
                 <p>
                   Developed a full-stack CMS site to the company’s event site.
                   Used frameworks such as React, and Express to help reached the
-                  client’s need for their upcoming event. Developed a Mobile app
-                  for an ongoing new project for the company. Used React-Native
-                  as the primary tool for development.
+                  client’s need for their upcoming event. I also developed a
+                  Mobile app for an ongoing new project for the company. Used
+                  React-Native as the primary tool for development.
                 </p>
 
                 <h4>Fly-Sorter- Contractor</h4>
                 <h5>December 2019-December 2019</h5>
 
                 <p>
-                  We developed a full-stack IMS with Amazon Serverless Database,
-                  Lambda Functions, SQL, and React. We integrated another team’s
-                  code base and reverse engineered their code base so that the
-                  interface better suited our clients.
+                  My team and I developed a full-stack inventory management
+                  system with Amazon Serverless Database, Lambda Functions, SQL,
+                  and React. My main contribution was reverse engineering their
+                  front end application and re-work it to better fit the new
+                  frameworks we were using. I also was the main designer behind
+                  the user interface for the site.
                 </p>
 
                 <h4>Farmers Insurance- Recruiter/Agency Consultant</h4>
                 <h5>January 2018 - June 2018</h5>
 
                 <p>
-                  Invited and helped candidates determine their potential in the
-                  insurance industry. Helped with sales at a local insurance
-                  branch when they had a sudden need for salesman.
+                  Some of my major tasks was to invite and helped candidates
+                  determine their potential in the insurance industry. I helped
+                  smaller agencies by giving them advices in regards to
+                  operations and I also helped with sales at a local insurance
+                  agent when they had a sudden leave of their employee.
                 </p>
 
                 <h4>Enterprise Rent-a-Car- Management Assistant</h4>
                 <h5>August 2016 - January 2018</h5>
 
                 <p>
-                  Helped managed a local branch and managed fleet logistics of
-                  the branch. Mentored some of the top salesmans in our region
-                  and was ranked 1st when I left.
+                  I helped managed a local branch with 2 other managers and
+                  managed fleet logistics of the branch. I was mainly the sales
+                  guru in the branch and I was one of the top salesman in the
+                  region and also mentored some of our newer employees to reach
+                  to similar spots.
                 </p>
               </div>
               <div className="experiences-education">
