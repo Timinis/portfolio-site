@@ -15,6 +15,10 @@ class App extends Component {
     };
   }
 
+  componentDidMount() {
+    document.title = 'Timothy Li- Interactive Media';
+  }
+
   render() {
     return (
       <HashRouter>

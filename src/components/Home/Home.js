@@ -7,17 +7,60 @@ import conway from '../../img/conway.png';
 import excursion from '../../img/excursion.png';
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.profileRef = null;
+    this.experienceRef = null;
+    this.languageRef = null;
+    this.projectRef = null;
+    this.contactRef = null;
+  }
+
+  scrollToMyRef = input => {
+    switch (input) {
+      case 'profile':
+        window.scrollTo(0, this.profileRef.offsetTop);
+        break;
+      case 'experience':
+        window.scrollTo(0, this.experienceRef.offsetTop);
+        break;
+      case 'language':
+        window.scrollTo(0, this.languageRef.offsetTop);
+        break;
+      case 'project':
+        window.scrollTo(0, this.projectRef.offsetTop);
+        break;
+      case 'contact':
+        window.scrollTo(0, this.contactRef.offsetTop);
+        break;
+      default:
+        window.scrollTo(0, 0);
+        break;
+    }
+  };
+
   render() {
     return (
       <div className="placement">
         <div className="grid-container">
           <div className="home-nav">
             <nav>
-              <a>Profile</a>
-              <a>Experiences</a>
-              <a>Languages</a>
-              <a>Projects</a>
-              <a>Contact</a>
+              <button onClick={() => this.scrollToMyRef()}>Top</button>
+              <button onClick={() => this.scrollToMyRef('profile')}>
+                Profile
+              </button>
+              <button onClick={() => this.scrollToMyRef('experience')}>
+                Experiences
+              </button>
+              <button onClick={() => this.scrollToMyRef('language')}>
+                Languages
+              </button>
+              <button onClick={() => this.scrollToMyRef('project')}>
+                Projects
+              </button>
+              <button onClick={() => this.scrollToMyRef('contact')}>
+                Contact
+              </button>
             </nav>
           </div>
 
@@ -28,7 +71,7 @@ class Home extends Component {
               <h2>Interactive Resume</h2>
             </div>
             <div className="cover" />
-            <div className="profile">
+            <div className="profile" ref={ref => (this.profileRef = ref)}>
               <div className="profile-title">
                 <h1>Profile</h1>
                 <h2>Full-Stack Web Developer</h2>
@@ -61,7 +104,10 @@ class Home extends Component {
                 </ul>
               </div>
             </div>
-            <div className="experiences">
+            <div
+              className="experiences"
+              ref={ref => (this.experienceRef = ref)}
+            >
               <div className="experiences-title">
                 <h1>Experiences</h1>
                 <h2>
@@ -123,7 +169,7 @@ class Home extends Component {
                 <p>B.S - Business Admin Finance </p>
               </div>
             </div>
-            <div className="languages">
+            <div className="languages" ref={ref => (this.languageRef = ref)}>
               <h1>Languages and Tools</h1>
               <h2>
                 "Anyone who stops learning is old, whether at twenty or eighty.”
@@ -145,7 +191,7 @@ class Home extends Component {
                 <li>WebGL- ThreeJS</li>
               </ul>
             </div>
-            <div className="projects">
+            <div className="projects" ref={ref => (this.projectRef = ref)}>
               <h1>Projects</h1>
               <h2>
                 “You can do anything you set your mind to.” <br /> - Benjamin
@@ -178,7 +224,7 @@ class Home extends Component {
                 </div>
               </div>
             </div>
-            <div className="contact">
+            <div className="contact" ref={ref => (this.contactRef = ref)}>
               <h1>Contact</h1>
               <h2>
                 “If I had asked people what they wanted, they would have said
