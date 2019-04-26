@@ -134,10 +134,10 @@ class Home extends Component {
                 <p>
                   My team and I developed a full-stack inventory management
                   system with Amazon Serverless Database, Lambda Functions, SQL,
-                  and React. My main contribution was reverse engineering their
-                  front end application and re-work it to better fit the new
-                  frameworks we were using. I also was the main designer behind
-                  the user interface for the site.
+                  and React. My main contribution was reverse engineering the
+                  previous team's application and re-work it to better fit the
+                  new frameworks we were using. I also was the main designer
+                  behind the user interface for the site.
                 </p>
 
                 <h4>Farmers Insurance- Recruiter/Agency Consultant</h4>
